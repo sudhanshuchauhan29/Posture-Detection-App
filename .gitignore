@@ -18,3 +18,6 @@ results_store.json
 # OS
 .DS_Store
 Thumbs.db
+
+angle_scaler.pkl
+label_classes.npy
