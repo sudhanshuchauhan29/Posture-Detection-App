@@ -136,3 +136,29 @@ For each split:
 
 Run All
 Or run Cell by cell
+
+## Evaluation & Reproducibility Update
+
+To ensure consistent class mapping across training and evaluation, 
+the LabelEncoder used during training is saved as:
+
+    label_encoder.pkl
+
+This encoder is loaded during evaluation to maintain identical 
+class ordering for confusion matrices and aggregated metrics.
+
+The evaluation is performed using:
+
+    results_store.json
+
+This file stores predictions (`y_true`, `y_pred`) from multiple splits 
+for all models:
+- ML baselines
+- CNN
+- Hybrid Conv1D–BiLSTM
+
+Final results are computed by aggregating predictions across all splits.
+
+⚠️ Note:
+Do not refit a new LabelEncoder during evaluation. Always reuse 
+the saved `label_encoder.pkl` to ensure reproducibility.
