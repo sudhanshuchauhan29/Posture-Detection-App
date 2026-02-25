@@ -162,3 +162,30 @@ Final results are computed by aggregating predictions across all splits.
 ⚠️ Note:
 Do not refit a new LabelEncoder during evaluation. Always reuse 
 the saved `label_encoder.pkl` to ensure reproducibility.
+
+🚀 Transformer-Based Posture Classification
+
+This module implements a hybrid Transformer architecture for exercise posture recognition using joint-angle features.
+
+The pipeline is designed to be:
+
+✅ Train-safe (no test leakage)
+
+✅ Test-safe (evaluation only on unseen hold-out data)
+
+✅ Reproducible (saves model, scaler, and label mapping)
+
+🧠 Model Architecture
+
+The model combines:
+
+1D Convolution layers (local feature extraction)
+
+Positional Encoding (sequence awareness)
+
+Multi-Head Self Attention (Transformer block)
+
+GRU layer (temporal refinement)
+
+Fully connected classifier (Softmax output)
+
