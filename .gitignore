@@ -10,6 +10,7 @@ __pycache__/
 # Model files (optional - if large)
 *.h5
 *.pkl
+*.npy
 results_store.json
 
 # Jupyter
