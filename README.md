@@ -1,191 +1,219 @@
-# 🏋️ Exercise Posture Recognition using ML & Deep Learning
+🏋️ Exercise Posture Recognition using ML & Deep Learning
 
-## Environment Setup
+Real-time exercise posture recognition system using joint-angle features and a Sequence-Based Hybrid Conv1D–BiLSTM architecture.
 
-This project is developed and tested using:
+This project compares classical machine learning, CNN, Transformer, and a proposed hybrid deep learning model for accurate exercise classification.
 
+🔍 Overview
+
+This system:
+
+Extracts 33 human pose landmarks using MediaPipe
+
+Converts landmarks into biomechanically meaningful joint angles
+
+Forms 20-frame temporal sequences
+
+Uses a Hybrid Conv1D + BiLSTM model
+
+Performs real-time posture classification
+
+Unlike frame-based approaches, this model captures motion continuity, improving robustness and accuracy.
+
+🧠 Models Implemented
+🔹 Classical ML Models
+
+Random Forest
+
+SVM (RBF)
+
+Logistic Regression
+
+KNN (k=5)
+
+Decision Tree
+
+🔹 Deep Learning Models
+1️⃣ 1D CNN (Single Frame)
+
+Frame-based angle classification.
+
+2️⃣ Hybrid Conv1D–BiLSTM (Single Frame)
+
+Conv1D + BiLSTM without temporal sequence modeling.
+
+3️⃣ Transformer-Based Sequence Model
+
+Conv1D + Positional Encoding + Multi-Head Attention + GRU.
+
+4️⃣ 🚀 Proposed Model: Sequence-Based Hybrid Conv1D–BiLSTM
+
+Operates on 20 consecutive frames of joint-angle data.
+
+Architecture:
+
+Input (20 × 10)
+        ↓
+Conv1D (64)
+        ↓
+Conv1D (128)
+        ↓
+MaxPooling
+        ↓
+Bidirectional LSTM (128)
+        ↓
+Dense (128) + Dropout
+        ↓
+Softmax Output
+📊 Results
+Model	Accuracy
+CNN (Single Frame)	93.09%
+Hybrid (1 Frame)	96.09%
+Transformer (Sequence)	91.09%
+Hybrid (20 Seq)	97.85%
+
+✔ Temporal modeling significantly improves performance.
+✔ Hybrid Conv1D–BiLSTM achieves the best overall results.
+✔ Transformer underperforms for short structured angle sequences.
+
+📂 Dataset Information
+
+Total Samples: 31,033
+
+Features: 9–10 Joint-Angle Numerical Features
+
+Classes:
+
+Jumping Jacks
+
+Pull ups
+
+Push Ups
+
+Russian twists
+
+Squats
+
+Data is generated from pose estimation and converted into angle-based representations.
+
+⚙️ Preprocessing Pipeline
+
+Extract pose landmarks (MediaPipe)
+
+Compute joint angles
+
+Encode labels (LabelEncoder)
+
+Normalize features (StandardScaler)
+
+Create rolling sequence buffer (20 frames)
+
+Train hybrid model
+
+🚀 Real-Time Inference Pipeline
+Video Capture (OpenCV)
+        ↓
+Pose Estimation (MediaPipe)
+        ↓
+Joint Angle Calculation
+        ↓
+Feature Normalization
+        ↓
+Sequence Buffer (20 Frames)
+        ↓
+Hybrid Model Prediction
+        ↓
+Exercise Classification Output
+
+Designed for low-latency real-time deployment.
+
+💾 Saved Artifacts
+
+sequence_hybrid_model.h5 → Trained deep model
+
+sequence_scaler.pkl → StandardScaler
+
+sequence_labels.npy → Class mapping
+
+sequence_history.json → Training + evaluation metrics
+
+results_store.json → Cross-validation results
+
+label_encoder.pkl → Reproducible label encoding
+
+🖥️ Environment Setup
+🔹 Required Version
 Python 3.10.11
 
-It is recommended to use a virtual environment to avoid dependency conflicts.
+TensorFlow 2.10.1 requires NumPy 1.23.5.
 
-### Step 1: Create Virtual Environment
-
+🔹 Installation
 python -m venv post
-
-### Step 2: Activate Environment
-
-Windows:
-posture_env\Scripts\activate
-
-### Step 3: Upgrade pip
-
+post\Scripts\activate
 python -m pip install --upgrade pip
-
-### Step 4: Install Dependencies
 
 pip install numpy==1.23.5
 pip install tensorflow==2.10.1
 pip install pandas matplotlib seaborn scikit-learn joblib opencv-python mediapipe
+▶️ How To Run
 
-Note:
-TensorFlow 2.10.1 is compatible with NumPy 1.23.5.
-Using newer NumPy versions may cause runtime errors.
+Place:
 
+exercise_angles.csv
 
-## 📌 Overview
+in the project directory.
 
-This project implements a posture recognition system for multiple exercises using joint-angle based features.
+Then run:
 
-The system compares:
+python sequence_model.py
 
-- Classical Machine Learning Models
-- 1D Convolutional Neural Network (CNN)
-- Hybrid Conv1D + BiLSTM Architecture
+If saved model exists, training will be skipped automatically.
 
-The dataset consists of angle-based skeletal features extracted from body joints.
+📈 Key Contributions
 
----
-Use Python Version 3.10.11 (Important)
-## 📂 Dataset Information
+Joint-angle based compact representation
 
-- Total Samples: 31,033
-- Total Features: 9 Angle-Based Numerical Features
-- Classes:
-  - Jumping Jacks
-  - Pull ups
-  - Push Ups
-  - Russian twists
-  - Squats
+Sequence-aware posture modeling
 
-Stratified 4-fold cross validation is used for evaluation.
+Hybrid Conv1D + BiLSTM architecture
 
----
+Comparative evaluation with ML, CNN, and Transformer
 
-## ⚙️ Data Preprocessing
+Real-time compatible pipeline
 
-1. Selected only numerical angle features.
-2. Encoded class labels using `LabelEncoder`.
-3. Standardized features using `StandardScaler`.
-4. Reshaped data to 3D format for CNN input.
-5. Used stratified splits to maintain class balance.
+EarlyStopping with best-weight restoration
 
----
+🔮 Future Improvements
 
-## 🧠 Models Implemented
+Multi-person detection support
 
-### 🔹 Classical ML Models
+More exercise categories
 
-- Random Forest
-- SVM (RBF Kernel)
-- Logistic Regression
-- K-Nearest Neighbors (K=5)
-- Decision Tree
+Adaptive sequence length
 
-Each model is trained on scaled features and evaluated using:
+Lightweight attention integration
 
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- Confusion Matrix
+Posture correctness scoring
 
----
+Edge-device deployment
 
-### 🔹 Deep Learning Models
+🎯 Applications
 
-#### 1️⃣ 1D CNN Architecture
+Fitness monitoring
 
-- Conv1D (64 filters)
-- MaxPooling
-- Conv1D (128 filters)
-- Global Max Pooling
-- Dense layers
-- Softmax output
+Sports coaching systems
 
-#### 2️⃣ Hybrid Conv1D + BiLSTM
+Rehabilitation tracking
 
-- Conv1D layers
-- MaxPooling
-- Bidirectional LSTM
-- Dense layers
-- Softmax output
+Smart gym analytics
 
----
+Home-based workout monitoring
 
-## 📊 Evaluation Strategy
+📄 Academic Documentation
 
-- 4-Fold Stratified Cross Validation
-- Metrics calculated per split
-- Final aggregated metrics across all splits
-- Confusion matrix visualization
+Full academic report available in repository.
 
----
+👨‍💻 Author
 
-## 💾 Model Saving
-
-For each split:
-
-- ML models saved as `.pkl`
-- CNN model saved as `.h5`
-- Hybrid model saved as `.h5`
-- Results stored in `results_store.json`
-
----
-
-## 🚀 How To Run
-
-Run All
-Or run Cell by cell
-
-## Evaluation & Reproducibility Update
-
-To ensure consistent class mapping across training and evaluation, 
-the LabelEncoder used during training is saved as:
-
-    label_encoder.pkl
-
-This encoder is loaded during evaluation to maintain identical 
-class ordering for confusion matrices and aggregated metrics.
-
-The evaluation is performed using:
-
-    results_store.json
-
-This file stores predictions (`y_true`, `y_pred`) from multiple splits 
-for all models:
-- ML baselines
-- CNN
-- Hybrid Conv1D–BiLSTM
-
-Final results are computed by aggregating predictions across all splits.
-
-⚠️ Note:
-Do not refit a new LabelEncoder during evaluation. Always reuse 
-the saved `label_encoder.pkl` to ensure reproducibility.
-
-🚀 Transformer-Based Posture Classification
-
-This module implements a hybrid Transformer architecture for exercise posture recognition using joint-angle features.
-
-The pipeline is designed to be:
-
-✅ Train-safe (no test leakage)
-
-✅ Test-safe (evaluation only on unseen hold-out data)
-
-✅ Reproducible (saves model, scaler, and label mapping)
-
-🧠 Model Architecture
-
-The model combines:
-
-1D Convolution layers (local feature extraction)
-
-Positional Encoding (sequence awareness)
-
-Multi-Head Self Attention (Transformer block)
-
-GRU layer (temporal refinement)
-
-Fully connected classifier (Softmax output)
-
+Sudhanshu Chauhan
+B.Tech Computer Science & Engineering
